@@ -152,6 +152,27 @@
     <property name="title">
      <string>Параметры</string>
     </property>
+    <widget class="QWidget" name="formLayoutWidget">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>50</y>
+       <width>191</width>
+       <height>221</height>
+      </rect>
+     </property>
+     <layout class="QFormLayout" name="optionsFormLayout"/>
+    </widget>
+    <widget class="QComboBox" name="optionsBox">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>189</width>
+       <height>20</height>
+      </rect>
+     </property>
+    </widget>
    </widget>
    <widget class="QGroupBox" name="outputBox">
     <property name="geometry">
@@ -175,7 +196,7 @@
       <height>241</height>
      </rect>
     </property>
-    <layout class="QVBoxLayout" name="drawingLayout" stretch="">
+    <layout class="QVBoxLayout" name="drawingLayout">
      <property name="spacing">
       <number>6</number>
      </property>

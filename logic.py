@@ -86,7 +86,7 @@ class Triangle(Figure):
     @classmethod
     def get_options(cls):
         return [
-            CulcOption('По трем сторонам', ['АВ', 'BC', 'AC'], cls.triangle_by_sides) 
+            CulcOption('По трем сторонам', ['АВ', 'BC', 'AC'], cls.triangle_by_sides)
         ]
 
     @staticmethod
@@ -99,8 +99,6 @@ class Triangle(Figure):
         angle_b = round(math.degrees(math.acos((side_ab**2 + side_bc**2 - side_ac**2) / (2 * side_ab * side_bc))), 0)
         angle_c = round(math.degrees(math.acos((side_ac**2 + side_bc**2 - side_ab**2) / (2 * side_ac * side_bc))), 0)
         return Triangle(side_ab, side_ac, side_bc, angle_a, angle_b, angle_c)
-        
-
 
     def __init__(self, side_ab, side_ac, side_bc, angle_a, angle_b, angle_c):
         self.side_ab = side_ab
