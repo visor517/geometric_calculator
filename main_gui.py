@@ -77,7 +77,7 @@ class Ui_MainWindow(object):
         self.inputBox.setGeometry(QtCore.QRect(10, 380, 211, 281))
         self.inputBox.setObjectName("inputBox")
         self.formLayoutWidget = QtWidgets.QWidget(self.inputBox)
-        self.formLayoutWidget.setGeometry(QtCore.QRect(10, 50, 191, 221))
+        self.formLayoutWidget.setGeometry(QtCore.QRect(10, 50, 191, 191))
         self.formLayoutWidget.setObjectName("formLayoutWidget")
         self.optionsFormLayout = QtWidgets.QFormLayout(self.formLayoutWidget)
         self.optionsFormLayout.setContentsMargins(0, 0, 0, 0)
@@ -85,6 +85,10 @@ class Ui_MainWindow(object):
         self.optionsBox = QtWidgets.QComboBox(self.inputBox)
         self.optionsBox.setGeometry(QtCore.QRect(10, 20, 189, 20))
         self.optionsBox.setObjectName("optionsBox")
+        self.calculateButton = QtWidgets.QPushButton(self.inputBox)
+        self.calculateButton.setEnabled(False)
+        self.calculateButton.setGeometry(QtCore.QRect(14, 250, 181, 23))
+        self.calculateButton.setObjectName("calculateButton")
         self.outputBox = QtWidgets.QGroupBox(self.centralwidget)
         self.outputBox.setGeometry(QtCore.QRect(230, 380, 211, 281))
         self.outputBox.setObjectName("outputBox")
@@ -113,6 +117,7 @@ class Ui_MainWindow(object):
         self.pushButton_7.setText(_translate("MainWindow", "Ромб"))
         self.pushButton_8.setText(_translate("MainWindow", "А"))
         self.inputBox.setTitle(_translate("MainWindow", "Параметры"))
+        self.calculateButton.setText(_translate("MainWindow", "Расчитать"))
         self.outputBox.setTitle(_translate("MainWindow", "Результат"))
 
 

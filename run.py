@@ -1,3 +1,4 @@
+from pyclbr import Class
 import sys
 import math
 from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox, QComboBox, QLineEdit, QLabel, QVBoxLayout, QHBoxLayout
@@ -10,6 +11,47 @@ from logic import Circle, Triangle
 from tools import clear_layout
 
 
+class Calculator:
+    def __init__(self, ui: Ui_MainWindow):
+        self.ui = ui
+        options = []
+        cur_figure_class = None
+        cur_figure = None       # может не пригодится
+
+        # навешиваем методы на кнопки
+        self.ui.circleButton.clicked.connect(lambda: self.inputOptions(Circle))
+        self.ui.triangleButton.clicked.connect(lambda: self.inputOptions(Triangle))
+        self.ui.optionsBox.currentIndexChanged.connect(self.draw_parameters)
+        self.ui.calculateButton.clicked.connect(self.calculate)
+
+    def inputOptions(self, figure_class: Class):
+        
+        self.cur_figure_class = figure_class
+        self.options = figure_class.get_options()
+
+        self.ui.optionsBox.clear()
+        # заполняем опции расчета
+        self.ui.optionsBox.addItems([option.name for option in self.options])
+
+        drawing = Drawing()
+        # чистим холст
+        clear_layout(self.ui.drawingLayout)
+        self.ui.drawingLayout.addWidget(drawing)
+
+    def draw_parameters(self, index):
+        global options
+
+        # чистим параметры
+        clear_layout(self.ui.optionsFormLayout)
+
+        if len(self.options) > 0:
+            for parameter in self.options[index].parameters:
+                self.ui.optionsFormLayout.addRow(QLabel(parameter), QLineEdit())
+
+    def calculate():
+        pass
+
+
 def main():
 
     # графическое окружение
@@ -19,38 +61,9 @@ def main():
     ui.setupUi(MainWindow)
     MainWindow.show()
 
-    options = []
-
-    def inputOptions(FigureClass):
-        global options
-        options = FigureClass.get_options()
-
-        ui.optionsBox.clear()
-        # заполняем опции расчета
-        ui.optionsBox.addItems([option.name for option in options])
-
-        drawing = Drawing()
-        # чистим холст
-        clear_layout(ui.drawingLayout)
-        ui.drawingLayout.addWidget(drawing)
-
-    def draw_parameters(index):
-        global options
-        
-        # чистим параметры
-        clear_layout(ui.optionsFormLayout)
-
-        if len(options) > 0:
-            for parameter in options[index].parameters:
-                ui.optionsFormLayout.addRow(QLabel(parameter), QLineEdit())
-
-    # навешиваем методы на кнопки
-    ui.circleButton.clicked.connect(lambda: inputOptions(Circle))
-    ui.triangleButton.clicked.connect(lambda: inputOptions(Triangle))
-    ui.optionsBox.currentIndexChanged.connect(draw_parameters)
-
-
-
+    # калькулятор
+    Calculator(ui)
+   
     sys.exit(app.exec())
 
 if __name__ == '__main__':

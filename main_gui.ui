@@ -158,7 +158,7 @@
        <x>10</x>
        <y>50</y>
        <width>191</width>
-       <height>221</height>
+       <height>191</height>
       </rect>
      </property>
      <layout class="QFormLayout" name="optionsFormLayout"/>
@@ -171,6 +171,22 @@
        <width>189</width>
        <height>20</height>
       </rect>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="calculateButton">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>14</x>
+       <y>250</y>
+       <width>181</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Расчитать</string>
      </property>
     </widget>
    </widget>
