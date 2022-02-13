@@ -42,7 +42,7 @@ class CulcOption:
 class Circle(Figure):
     # метод возвращает возможные варианты построения
     @classmethod
-    def get_init(cls):
+    def get_options(cls):
         return [
             CulcOption('По радиусу', ['Радиус'], cls.__init__),
             CulcOption('По диаметру', ['Диаметр'], cls.circle_by_diameter),
@@ -84,7 +84,7 @@ class Circle(Figure):
 class Triangle(Figure):
 
     @classmethod
-    def get_init(cls):
+    def get_options(cls):
         return [
             CulcOption('По трем сторонам', ['АВ', 'BC', 'AC'], cls.triangle_by_sides) 
         ]
@@ -181,6 +181,7 @@ class Trapezoid(Figure):
 
 # Circle(Parameter('diameter', 6400)).plot()
 
-triangle = Triangle.get_init()[0].init(4, 5, 16)
+if __name__ == '__main__':
 
-triangle.plot()
+    triangle = Triangle.get_options()[0].init(4, 5, 6)
+    triangle.plot()
