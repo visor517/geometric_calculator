@@ -1,19 +1,9 @@
-'''
-При помощи ООП спроектировать и реализовать геометрический калькулятор
-для вычислений, производимых над фигурами. Калькулятор должен поддерживать вычисления для плоских и объемных фигур.
-Плоские фигуры: круг, квадрат, прямоугольник, треугольник, трапеция, ромб.
-Объемные фигуры: сфера, куб, параллелепипед, пирамида, цилиндр, конус.
-Реализовать как минимум один общий метод вычисления для всех фигур и как минимум один специфичный для определенных фигур. 
-Например, площадь – общий метод для всех фигур, медиана – специфичный метод для ряда фигур.
-Необходимо: реализовать графический интерфейс для возможностей взаимодействия пользователя с программой и визуализации 
-фигур (с учетом введенных параметров фигуры).
-При реализации использовать все виды методов: статический, метод класса и экземпляра.
-'''
-
 import abc
 import math
 from typing import Tuple
 # Python 3.8
+
+from drawing import *
 
 
 class FigureError(Exception):
@@ -22,8 +12,8 @@ class FigureError(Exception):
 class Figure(abc.ABC):
 
     @abc.abstractmethod
-    def plot(self):
-        '''plots a figure'''
+    def calculate(self):
+        '''calculates a figure'''
 
 class Parameter:
     def __init__(self, name, value):
@@ -32,11 +22,11 @@ class Parameter:
 
 # варианы построения
 # название варианта / необходимые параметры / функция для создания
-class CulcOption:
-    def __init__(self, name, parameters: Tuple[str], function_for_init):
+class CalcOption:
+    def __init__(self, name, parameters: Tuple[str], function_for_create):
         self.name = name
         self.parameters = parameters
-        self.init = function_for_init
+        self.create_obj = function_for_create
 
 # круг
 class Circle(Figure):
@@ -44,10 +34,10 @@ class Circle(Figure):
     @classmethod
     def get_options(cls):
         return [
-            CulcOption('По радиусу', ['Радиус'], cls.__init__),
-            CulcOption('По диаметру', ['Диаметр'], cls.circle_by_diameter),
-            CulcOption('По площади', ['Площадь'], cls.circle_by_area),
-            CulcOption('По периметру', ['Периметр'], cls.circle_by_perimeter),
+            CalcOption('По радиусу', ['Радиус'], cls.__init__),
+            CalcOption('По диаметру', ['Диаметр'], cls.circle_by_diameter),
+            CalcOption('По площади', ['Площадь'], cls.circle_by_area),
+            CalcOption('По периметру', ['Периметр'], cls.circle_by_perimeter),
         ]
 
     @staticmethod
@@ -74,19 +64,19 @@ class Circle(Figure):
     def get_perimeter(self):
         return 2 * math.pi * self.radius
 
-    def plot(self):
+    def calculate(self):
         print(f'Радиус {self.radius}')
         print(f'Диаметр {self.get_diameter()}')
         print(f'Площадь {self.get_area()}')
         print(f'Периметр {self.get_perimeter()}')
 
 # треугольник
-class Triangle(Figure):
+class Triangle(Figure, DrawingTriangle):
 
     @classmethod
     def get_options(cls):
         return [
-            CulcOption('По трем сторонам', ['АВ', 'BC', 'AC'], cls.triangle_by_sides)
+            CalcOption('По трем сторонам', ['АВ', 'BC', 'AC'], cls.triangle_by_sides)
         ]
 
     @staticmethod
@@ -95,16 +85,16 @@ class Triangle(Figure):
         if side_ab + side_ac < side_bc or side_ab + side_bc < side_ac or side_bc + side_ac < side_ab:
             raise FigureError('Нарушено правило длин сторон треугольника')
         # вычисление углов
-        angle_a = round(math.degrees(math.acos((side_ab**2 + side_ac**2 - side_bc**2) / (2 * side_ab * side_ac))), 0)
-        angle_b = round(math.degrees(math.acos((side_ab**2 + side_bc**2 - side_ac**2) / (2 * side_ab * side_bc))), 0)
-        angle_c = round(math.degrees(math.acos((side_ac**2 + side_bc**2 - side_ab**2) / (2 * side_ac * side_bc))), 0)
+        angle_a = math.acos((side_ab**2 + side_ac**2 - side_bc**2) / (2 * side_ab * side_ac))
+        angle_b = math.acos((side_ab**2 + side_bc**2 - side_ac**2) / (2 * side_ab * side_bc))
+        angle_c = math.acos((side_ac**2 + side_bc**2 - side_ab**2) / (2 * side_ac * side_bc))
         return Triangle(side_ab, side_ac, side_bc, angle_a, angle_b, angle_c)
 
     def __init__(self, side_ab, side_ac, side_bc, angle_a, angle_b, angle_c):
         self.side_ab = side_ab
         self.side_ac = side_ac
         self.side_bc = side_bc
-        self.angle_a = angle_a
+        self.angle_a = angle_a      # в радианах
         self.angle_b = angle_b
         self.angle_c = angle_c
 
@@ -115,15 +105,17 @@ class Triangle(Figure):
     def get_perimeter(self):
         return self.side_ab + self.side_bc + self.side_ac
 
-    def plot(self):
-        print(f'Сторона AB {self.side_ab}')
-        print(f'Сторона AC {self.side_ac}')
-        print(f'Сторона BC {self.side_bc}')
-        print(f'Угол A {self.angle_a}')
-        print(f'Угол B {self.angle_b}')
-        print(f'Угол C {self.angle_c}')
-        print(f'Площадь {self.get_area()}')
-        print(f'Периметр {self.get_perimeter()}')
+    def calculate(self):
+        return (
+            f'Сторона AB {self.side_ab} \n'
+            f'Сторона AC {self.side_ac} \n'
+            f'Сторона BC {self.side_bc} \n'
+            f'Угол A {round(math.degrees(self.angle_a), 1)} \n'
+            f'Угол B {round(math.degrees(self.angle_b), 1)} \n'
+            f'Угол C {round(math.degrees(self.angle_c), 1)} \n'
+            f'Площадь {round(self.get_area(), 2)} \n'
+            f'Периметр {round(self.get_perimeter(), 2)} \n'
+        )
 
 # прямоугольник
 class Rectangle(Figure):
@@ -177,9 +169,9 @@ class Trapezoid(Figure):
 
 # сфера, куб, параллелепипед, пирамида, цилиндр, конус.
 
-# Circle(Parameter('diameter', 6400)).plot()
+# Circle(Parameter('diameter', 6400)).calculate()
 
 if __name__ == '__main__':
 
-    triangle = Triangle.get_options()[0].init(4, 5, 6)
-    triangle.plot()
+    triangle = Triangle.get_options()[0].create_obj(4, 5, 6)
+    print(triangle.calculate())
