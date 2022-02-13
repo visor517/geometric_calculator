@@ -11,14 +11,14 @@ class FigureError(Exception):
 
 class Figure(abc.ABC):
 
-    @abc.abstractmethod
+    # @abc.abstractmethod
     def calculate(self):
-        '''calculates a figure'''
+        return 'Метод calculate не задан'
 
-class Parameter:
-    def __init__(self, name, value):
-        self.name = name
-        self.value = value
+    # временная заглушка
+    def get_drawing(self):
+        print('Метод get_drawing не задан')
+
 
 # варианы построения
 # название варианта / необходимые параметры / функция для создания
@@ -29,12 +29,12 @@ class CalcOption:
         self.create_obj = function_for_create
 
 # круг
-class Circle(Figure):
+class Circle(DrawingCircle, Figure):
     # метод возвращает возможные варианты построения
     @classmethod
     def get_options(cls):
         return [
-            CalcOption('По радиусу', ['Радиус'], cls.__init__),
+            CalcOption('По радиусу', ['Радиус'], Circle),
             CalcOption('По диаметру', ['Диаметр'], cls.circle_by_diameter),
             CalcOption('По площади', ['Площадь'], cls.circle_by_area),
             CalcOption('По периметру', ['Периметр'], cls.circle_by_perimeter),
@@ -65,13 +65,15 @@ class Circle(Figure):
         return 2 * math.pi * self.radius
 
     def calculate(self):
-        print(f'Радиус {self.radius}')
-        print(f'Диаметр {self.get_diameter()}')
-        print(f'Площадь {self.get_area()}')
-        print(f'Периметр {self.get_perimeter()}')
+        return (
+            f'Радиус {round(self.radius, 2)} \n'
+            f'Диаметр {round(self.get_diameter(), 2)} \n'
+            f'Площадь {round(self.get_area(), 2)} \n'
+            f'Периметр {round(self.get_perimeter(), 2)} \n'
+        )
 
 # треугольник
-class Triangle(Figure, DrawingTriangle):
+class Triangle(DrawingTriangle, Figure):
 
     @classmethod
     def get_options(cls):
@@ -118,27 +120,51 @@ class Triangle(Figure, DrawingTriangle):
         )
 
 # прямоугольник
-class Rectangle(Figure):
-    def __init__(self, side_a, side_b):
-        self.side_a = side_a
-        self.side_b = side_b
+class Rectangle(DrawingRectangle, Figure):
+
+    @classmethod
+    def get_options(cls):
+        return [
+            CalcOption('Две стороны', ['АВ', 'BC'], Rectangle)
+        ]
+    
+    def __init__(self, side_ab, side_bc):
+        self.side_ab = side_ab
+        self.side_bc = side_bc
 
     def get_area(self):
-        return self.side_a * self.side_b
+        return self.side_ab * self.side_bc
 
     def get_perimeter(self):
-        return 2 * (self.side_a + self.side_b)
+        return 2 * (self.side_ab + self.side_bc)
+
+    def calculate(self):
+        return (
+            f'Сторона AB {self.side_ab} \n'
+            f'Сторона BC {self.side_bc} \n'
+            f'Сторона CD {self.side_ab} \n'
+            f'Сторона AD {self.side_bc} \n'
+            f'Угол A 90.0 \n'
+            f'Угол B 90.0 \n'
+            f'Угол C 90.0 \n'
+            f'Угол D 90.0 \n'
+            f'Площадь {round(self.get_area(), 2)} \n'
+            f'Периметр {round(self.get_perimeter(), 2)} \n'
+        )
 
 # квадрат
-class Square(Figure):
+class Square(Rectangle):
+
+    @classmethod
+    def get_options(cls):
+        return [
+            CalcOption('По стороне', ['АВ'], Square)
+        ]
+
     def __init__(self, side):
-        self.side = side
+        self.side_ab = side
+        self.side_bc = side
 
-    def get_area(self):
-        return self.side**2
-
-    def get_perimeter(self):
-        return 4 * self.side
 
 # ромб
 class Romb(Figure):

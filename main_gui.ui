@@ -67,9 +67,9 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>260</y>
+      <y>280</y>
       <width>431</width>
-      <height>111</height>
+      <height>101</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout">
@@ -82,17 +82,34 @@
      <property name="verticalSpacing">
       <number>0</number>
      </property>
-     <item row="0" column="0">
-      <widget class="QPushButton" name="circleButton">
+     <item row="1" column="3">
+      <widget class="QPushButton" name="cubeButton">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="text">
-        <string>Круг</string>
+        <string>Куб</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="squareButton">
+       <property name="text">
+        <string>Квадрат</string>
        </property>
       </widget>
      </item>
      <item row="1" column="1">
-      <widget class="QPushButton" name="pushButton_5">
+      <widget class="QPushButton" name="trapezoidButton">
        <property name="text">
-        <string>Б</string>
+        <string>Трапеция</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QPushButton" name="rombButton">
+       <property name="text">
+        <string>Ромб</string>
        </property>
       </widget>
      </item>
@@ -103,38 +120,67 @@
        </property>
       </widget>
      </item>
+     <item row="0" column="0">
+      <widget class="QPushButton" name="circleButton">
+       <property name="text">
+        <string>Круг</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="2">
+      <widget class="QPushButton" name="sphereButton">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="text">
+        <string>Сфера</string>
+       </property>
+      </widget>
+     </item>
      <item row="0" column="3">
-      <widget class="QPushButton" name="pushButton_4">
+      <widget class="QPushButton" name="rectangleButton">
        <property name="text">
         <string>Прямоугольник</string>
        </property>
       </widget>
      </item>
-     <item row="1" column="3">
-      <widget class="QPushButton" name="pushButton_6">
+     <item row="2" column="0">
+      <widget class="QPushButton" name="parallelepipedButton">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="text">
-        <string>Трапеция</string>
+        <string>Параллелепипед</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="2">
-      <widget class="QPushButton" name="squerButton">
+     <item row="2" column="1">
+      <widget class="QPushButton" name="pyramidButton">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="text">
-        <string>Квадрат</string>
+        <string>Пирамида</string>
        </property>
       </widget>
      </item>
-     <item row="1" column="2">
-      <widget class="QPushButton" name="pushButton_7">
+     <item row="2" column="2">
+      <widget class="QPushButton" name="cylinderButton">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="text">
-        <string>Ромб</string>
+        <string>Цилиндр</string>
        </property>
       </widget>
      </item>
-     <item row="1" column="0">
-      <widget class="QPushButton" name="pushButton_8">
+     <item row="2" column="3">
+      <widget class="QPushButton" name="coneButton">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="text">
-        <string>А</string>
+        <string>Конус</string>
        </property>
       </widget>
      </item>
@@ -234,7 +280,7 @@
       <x>10</x>
       <y>10</y>
       <width>431</width>
-      <height>241</height>
+      <height>261</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="drawingLayout">

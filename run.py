@@ -1,12 +1,12 @@
 from pyclbr import Class
 import sys
 import math
-from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox, QComboBox, QLineEdit, QLabel, QVBoxLayout, QHBoxLayout
+from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox, QLineEdit, QLabel
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 
 from main_gui import Ui_MainWindow
-from logic import Figure, Circle, Triangle
+from logic import Circle, Triangle, Rectangle, Square
 from tools import clear_layout
 
 
@@ -21,6 +21,8 @@ class Calculator:
         # навешиваем методы на кнопки
         self.ui.circleButton.clicked.connect(lambda: self.input_options(Circle))
         self.ui.triangleButton.clicked.connect(lambda: self.input_options(Triangle))
+        self.ui.rectangleButton.clicked.connect(lambda: self.input_options(Rectangle))
+        self.ui.squareButton.clicked.connect(lambda: self.input_options(Square))
         self.ui.optionsBox.currentIndexChanged.connect(self.draw_parameters)
         self.ui.calculateButton.clicked.connect(self.calculate)
 
