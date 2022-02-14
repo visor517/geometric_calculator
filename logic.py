@@ -219,6 +219,9 @@ class Trapezoid(DrawingTrapezoid, Quadrangle):
         side_cd = side_ab - height * (1/math.tan(math.radians(angle_a)) + 1/math.tan(math.radians(angle_b)))
         side_ad = height / math.sin(math.radians(angle_a))
 
+        if side_cd < 0:
+            raise FigureError('Отрицательное основание. Поменяйте значения!')
+
         return Trapezoid(side_ab, side_bc, side_cd, side_ad, angle_a, angle_b, angle_c, angle_d, height)
 
     def __init__(self, side_ab, side_bc, side_cd, side_ad, angle_a, angle_b, angle_c, angle_d, height):
@@ -386,6 +389,35 @@ class Parallelepiped(DrawingParallelepiped, Figure):
         )
 
 # пирамида
+class Pyramid(DrawingPyramid, Figure):
+    @classmethod
+    def get_options(cls):
+        return [
+            CalcOption('Сторона основания и высота', ['Сторна a', 'Высота h'], cls)
+        ]
+
+    def __init__(self, side, height):
+        self.side = side
+        self.height = height
+
+    def get_edge_height(self):
+        return (self.height**2 + (self.side / 2)**2)**(0.5)
+
+    def get_area(self):
+        return self.side**2 + self.get_edge_height() * self.height * 2
+
+    def get_volume(self):
+        return self.side**2 * self.height / 3
+
+    def get_stats(self):
+        return (
+            f'Сторна основания {round(self.side, 2)} \n'
+            f'Высота пирамиды {round(self.height, 2)} \n'
+            f'Высота грани {round(self.get_edge_height(), 2)} \n'
+            f'Площадь {round(self.get_area(), 2)} \n'
+            f'Объем {round(self.get_volume(), 2)} \n'
+        )
+
 # конус
 class Cone(DrawingCone, Figure):
     @classmethod

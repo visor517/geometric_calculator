@@ -7,7 +7,7 @@ from PyQt5.QtCore import *
 
 from main_gui import Ui_MainWindow
 from logic import Circle, Romb, Triangle, Rectangle, Square, FigureError, Trapezoid, Sphere, Cylinder, \
-                Cube, Parallelepiped, Cone
+                Cube, Parallelepiped, Cone, Pyramid
 from tools import clear_layout
 
 
@@ -30,7 +30,7 @@ class Calculator:
         self.ui.cylinderButton.clicked.connect(lambda: self.input_options(Cylinder))
         self.ui.parallelepipedButton.clicked.connect(lambda: self.input_options(Parallelepiped))
         self.ui.cubeButton.clicked.connect(lambda: self.input_options(Cube))
-        # self.ui.pyramidButton.clicked.connect(lambda: self.input_options(Pyramid))
+        self.ui.pyramidButton.clicked.connect(lambda: self.input_options(Pyramid))
         self.ui.coneButton.clicked.connect(lambda: self.input_options(Cone))
         self.ui.optionsBox.currentIndexChanged.connect(self.draw_parameters)
         self.ui.calculateButton.clicked.connect(self.calculate)

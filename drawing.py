@@ -41,6 +41,7 @@ class DrawingTriangle:
                 # построение
                 painter = QPainter()
                 painter.begin(self)
+                painter.setPen(QPen(Qt.black, 2, Qt.SolidLine))
                 painter.drawLine(point_A, point_B)
                 painter.drawLine(point_A, point_C)
                 painter.drawLine(point_B, point_C)
@@ -67,10 +68,9 @@ class DrawingCircle:
                 # построение
                 painter = QPainter()
                 painter.begin(self)
+                painter.setPen(QPen(Qt.black, 2, Qt.SolidLine))
                 painter.drawEllipse(center_point, self.radius, self.radius)
-                pen = QPen()
-                pen.setBrush(Qt.blue)
-                painter.setPen(pen)
+                painter.setPen(QPen(Qt.blue, 1, Qt.SolidLine))
                 painter.drawLine(center_point, center_point + QPoint(self.radius, 0))
                 painter.end()
 
@@ -96,10 +96,8 @@ class DrawingRectangle:
                 # построение
                 painter = QPainter()
                 painter.begin(self)
+                painter.setPen(QPen(Qt.black, 2, Qt.SolidLine))
                 painter.drawRect(x1, y1, self.side_ab, self.side_bc)
-                pen = QPen()
-                pen.setBrush(Qt.blue)
-                painter.setPen(pen)
                 painter.end()
 
         return Drawing(self.side_ab, self.side_bc)
@@ -135,6 +133,7 @@ class DrawingRomb:
                 # построение
                 painter = QPainter()
                 painter.begin(self)
+                painter.setPen(QPen(Qt.black, 2, Qt.SolidLine))
                 painter.drawLine(point_A, point_B)
                 painter.drawLine(point_B, point_C)
                 painter.drawLine(point_C, point_D)
@@ -181,6 +180,7 @@ class DrawingTrapezoid:
                 # построение
                 painter = QPainter()
                 painter.begin(self)
+                painter.setPen(QPen(Qt.black, 2, Qt.SolidLine))
                 painter.drawLine(point_A, point_B)
                 painter.drawLine(point_B, point_C)
                 painter.drawLine(point_C, point_D)
@@ -208,12 +208,11 @@ class DrawingSpere:
                 # построение
                 painter = QPainter()
                 painter.begin(self)
+                painter.setPen(QPen(Qt.black, 2, Qt.SolidLine))
                 painter.drawEllipse(center_point, self.radius, self.radius)
                 painter.drawEllipse(center_point, self.radius, self.radius / 2)
                 painter.drawText(center_point + QPoint(-10, -5), 'O')
-                pen = QPen()
-                pen.setBrush(Qt.blue)
-                painter.setPen(pen)
+                painter.setPen(QPen(Qt.green, 1, Qt.SolidLine))
                 painter.drawLine(center_point, center_point + QPoint(self.radius, 0))
                 painter.end()
 
@@ -226,7 +225,7 @@ class DrawingCylinder:
             def __init__(self, radius, height):
                 super().__init__()
                 self.radius = radius
-                self.height = height
+                self.h = height
 
             def paintEvent(self, e):
 
@@ -235,10 +234,11 @@ class DrawingCylinder:
                 # построение
                 painter = QPainter()
                 painter.begin(self)
-                painter.drawEllipse(center_point + QPoint(0, self.height / 2), self.radius, self.radius / 2)
-                painter.drawEllipse(center_point - QPoint(0, self.height / 2), self.radius, self.radius / 2)
-                painter.drawLine(center_point + QPoint(self.radius, self.height / 2), center_point + QPoint(self.radius, -self.height / 2))
-                painter.drawLine(center_point - QPoint(self.radius, self.height / 2), center_point - QPoint(self.radius, -self.height / 2))
+                painter.setPen(QPen(Qt.black, 2, Qt.SolidLine))
+                painter.drawEllipse(center_point + QPoint(0, self.h / 2), self.radius, self.radius / 2)
+                painter.drawEllipse(center_point - QPoint(0, self.h / 2), self.radius, self.radius / 2)
+                painter.drawLine(center_point + QPoint(self.radius, self.h / 2), center_point + QPoint(self.radius, -self.h / 2))
+                painter.drawLine(center_point - QPoint(self.radius, self.h / 2), center_point - QPoint(self.radius, -self.h / 2))
                 painter.end()
 
         return Drawing(self.radius, self.height)
@@ -282,18 +282,20 @@ class DrawingCube:
                 # построение
                 painter = QPainter()
                 painter.begin(self)
+                painter.setPen(QPen(Qt.black, 2, Qt.SolidLine))
                 painter.drawLine(point_A, point_B)
                 painter.drawLine(point_B, point_C)
                 painter.drawLine(point_C, point_D)
                 painter.drawLine(point_A, point_D)
-                painter.drawLine(point_A2, point_B2)
                 painter.drawLine(point_B2, point_C2)
                 painter.drawLine(point_C2, point_D2)
-                painter.drawLine(point_A2, point_D2)
-                painter.drawLine(point_A, point_A2)
                 painter.drawLine(point_B, point_B2)
                 painter.drawLine(point_C, point_C2)
-                painter.drawLine(point_D, point_D2) 
+                painter.drawLine(point_D, point_D2)
+                painter.setPen(QPen(Qt.black, 2, Qt.DashLine))
+                painter.drawLine(point_A, point_A2)
+                painter.drawLine(point_A2, point_B2)
+                painter.drawLine(point_A2, point_D2)
                 painter.end()
 
         return Drawing(self.side)
@@ -339,18 +341,20 @@ class DrawingParallelepiped:
                 # построение
                 painter = QPainter()
                 painter.begin(self)
+                painter.setPen(QPen(Qt.black, 2, Qt.SolidLine))
                 painter.drawLine(point_A, point_B)
                 painter.drawLine(point_B, point_C)
                 painter.drawLine(point_C, point_D)
                 painter.drawLine(point_A, point_D)
-                painter.drawLine(point_A2, point_B2)
                 painter.drawLine(point_B2, point_C2)
                 painter.drawLine(point_C2, point_D2)
-                painter.drawLine(point_A2, point_D2)
-                painter.drawLine(point_A, point_A2)
                 painter.drawLine(point_B, point_B2)
                 painter.drawLine(point_C, point_C2)
-                painter.drawLine(point_D, point_D2) 
+                painter.drawLine(point_D, point_D2)
+                painter.setPen(QPen(Qt.black, 2, Qt.DashLine))
+                painter.drawLine(point_A, point_A2)
+                painter.drawLine(point_A2, point_B2)
+                painter.drawLine(point_A2, point_D2)
                 painter.end()
 
         return Drawing(self.side_a, self.side_b, self.side_c)
@@ -359,10 +363,10 @@ class DrawingCone:
     def get_drawing(self):
         
         class Drawing(QFrame):
-            def __init__(self, radius, height):
+            def __init__(self, height, radius):
                 super().__init__()
-                self.radius = radius
                 self.h = height
+                self.radius = radius
 
             def paintEvent(self, e):
 
@@ -371,9 +375,56 @@ class DrawingCone:
                 # построение
                 painter = QPainter()
                 painter.begin(self)
-                painter.drawEllipse(center_point + QPoint(0, self.h / 2), self.radius, self.radius / 4)
-                painter.drawLine(center_point - QPoint(0, self.h / 2), center_point + QPoint(self.radius, self.h / 2))
-                painter.drawLine(center_point - QPoint(0, self.h / 2), center_point + QPoint(-self.radius, self.h / 2))
+                painter.setPen(QPen(Qt.black, 2, Qt.SolidLine))
+                painter.drawEllipse(center_point + QPoint(0, self.h / 2), self.radius, self.radius / 2)
+                painter.drawLine(center_point + QPoint(self.radius, self.h / 2), center_point + QPoint(0, -self.h / 2))
+                painter.drawLine(center_point + QPoint(-self.radius, self.h / 2), center_point + QPoint(0, -self.h / 2))
                 painter.end()
 
-        return Drawing(self.radius, self.height)
+        return Drawing(self.height, self.radius)
+
+class DrawingPyramid:
+    def get_drawing(self):
+        
+        class Drawing(QFrame):
+            def __init__(self, side, height):
+                super().__init__()
+                self.side = side
+                self.h = height
+
+            def paintEvent(self, e):
+
+                center_point = get_center(self)
+
+                # опять магические числа, но пока так
+                # вершины
+                point_A = center_point + QPoint(0, self.h / 2)
+                point_B = point_A + QPoint(self.side, 0)
+                point_C = point_B + QPoint(self.side / 2, -self.side / 3)
+                point_D = point_A + QPoint(self.side / 2, -self.side / 3)
+                middle_point = (point_A + point_B + point_C + point_D) / 4
+                delta_point = point_A - middle_point
+
+                point_A = point_A + delta_point
+                point_B = point_B + delta_point
+                point_C = point_C + delta_point
+                point_D = point_D + delta_point
+                point_T = center_point - QPoint(0, self.h / 2)
+
+                # построение
+                painter = QPainter()
+                painter.begin(self)
+                painter.setPen(QPen(Qt.black, 2, Qt.SolidLine))
+                painter.drawLine(point_A, point_B)
+                painter.drawLine(point_B, point_C)
+                painter.drawLine(point_A, point_T)
+                painter.drawLine(point_B, point_T)
+                painter.drawLine(point_C, point_T)
+                painter.setPen(QPen(Qt.black, 2, Qt.DashLine))
+                painter.drawLine(point_C, point_D)
+                painter.drawLine(point_A, point_D)
+                painter.drawLine(point_D, point_T)
+
+                painter.end()
+
+        return Drawing(self.side, self.height)
