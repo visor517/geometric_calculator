@@ -242,3 +242,115 @@ class DrawingCylinder:
                 painter.end()
 
         return Drawing(self.radius, self.hight)
+
+class DrawingCube:
+
+    def get_drawing(self):
+        
+        class Drawing(QFrame):
+            def __init__(self, side_ab):
+                super().__init__()
+                self.side = side_ab
+
+            def paintEvent(self, e):
+
+                center_point = get_center(self)
+
+                # вершины
+                point_A = QPoint(0, 0) + center_point
+                point_B = point_A + QPoint(self.side, 0)
+                point_C = point_B + QPoint(0, -self.side)
+                point_D = point_A + QPoint(0, -self.side)
+
+                point_A2 = point_A + QPoint(self.side / 2, -self.side / 3)
+                point_B2 = point_B + QPoint(self.side / 2, -self.side / 3)
+                point_C2 = point_C + QPoint(self.side / 2, -self.side / 3)
+                point_D2 = point_D + QPoint(self.side / 2, -self.side / 3)
+
+                # смещение от центра
+                middle_point = (point_A + point_C2) / 2
+                delta_point = center_point - middle_point
+                point_A = point_A + delta_point
+                point_B = point_B + delta_point
+                point_C = point_C + delta_point
+                point_D = point_D + delta_point
+                point_A2 = point_A2 + delta_point
+                point_B2 = point_B2 + delta_point
+                point_C2 = point_C2 + delta_point
+                point_D2 = point_D2 + delta_point
+
+                # построение
+                painter = QPainter()
+                painter.begin(self)
+                painter.drawLine(point_A, point_B)
+                painter.drawLine(point_B, point_C)
+                painter.drawLine(point_C, point_D)
+                painter.drawLine(point_A, point_D)
+                painter.drawLine(point_A2, point_B2)
+                painter.drawLine(point_B2, point_C2)
+                painter.drawLine(point_C2, point_D2)
+                painter.drawLine(point_A2, point_D2)
+                painter.drawLine(point_A, point_A2)
+                painter.drawLine(point_B, point_B2)
+                painter.drawLine(point_C, point_C2)
+                painter.drawLine(point_D, point_D2) 
+                painter.end()
+
+        return Drawing(self.side)
+
+class DrawingParallelepiped:
+
+    def get_drawing(self):
+        
+        class Drawing(QFrame):
+            def __init__(self, side_a, side_b, side_c):
+                super().__init__()
+                self.side_a = side_a
+                self.side_b = side_b
+                self.side_c = side_c
+
+            def paintEvent(self, e):
+
+                center_point = get_center(self)
+
+                # вершины
+                point_A = QPoint(0, 0) + center_point
+                point_B = point_A + QPoint(self.side_a, 0)
+                point_C = point_B + QPoint(0, -self.side_b)
+                point_D = point_A + QPoint(0, -self.side_b)
+
+                point_A2 = point_A + QPoint(self.side_c / 2, -self.side_c / 3)
+                point_B2 = point_B + QPoint(self.side_c / 2, -self.side_c / 3)
+                point_C2 = point_C + QPoint(self.side_c / 2, -self.side_c / 3)
+                point_D2 = point_D + QPoint(self.side_c / 2, -self.side_c / 3)
+
+                # смещение от центра
+                middle_point = (point_A + point_C2) / 2
+                delta_point = center_point - middle_point
+                point_A = point_A + delta_point
+                point_B = point_B + delta_point
+                point_C = point_C + delta_point
+                point_D = point_D + delta_point
+                point_A2 = point_A2 + delta_point
+                point_B2 = point_B2 + delta_point
+                point_C2 = point_C2 + delta_point
+                point_D2 = point_D2 + delta_point
+
+                # построение
+                painter = QPainter()
+                painter.begin(self)
+                painter.drawLine(point_A, point_B)
+                painter.drawLine(point_B, point_C)
+                painter.drawLine(point_C, point_D)
+                painter.drawLine(point_A, point_D)
+                painter.drawLine(point_A2, point_B2)
+                painter.drawLine(point_B2, point_C2)
+                painter.drawLine(point_C2, point_D2)
+                painter.drawLine(point_A2, point_D2)
+                painter.drawLine(point_A, point_A2)
+                painter.drawLine(point_B, point_B2)
+                painter.drawLine(point_C, point_C2)
+                painter.drawLine(point_D, point_D2) 
+                painter.end()
+
+        return Drawing(self.side_a, self.side_b, self.side_c)

@@ -6,7 +6,7 @@ from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 
 from main_gui import Ui_MainWindow
-from logic import Circle, Romb, Triangle, Rectangle, Square, FigureError, Trapezoid, Sphere, Cylinder
+from logic import Circle, Romb, Triangle, Rectangle, Square, FigureError, Trapezoid, Sphere, Cylinder, Cube, Parallelepiped
 from tools import clear_layout
 
 
@@ -27,6 +27,8 @@ class Calculator:
         self.ui.trapezoidButton.clicked.connect(lambda: self.input_options(Trapezoid))
         self.ui.sphereButton.clicked.connect(lambda: self.input_options(Sphere))
         self.ui.cylinderButton.clicked.connect(lambda: self.input_options(Cylinder))
+        self.ui.parallelepipedButton.clicked.connect(lambda: self.input_options(Parallelepiped))
+        self.ui.cubeButton.clicked.connect(lambda: self.input_options(Cube))
         self.ui.optionsBox.currentIndexChanged.connect(self.draw_parameters)
         self.ui.calculateButton.clicked.connect(self.calculate)
 

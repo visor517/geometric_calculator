@@ -289,7 +289,6 @@ class Sphere(DrawingSpere, Figure):
             f'Объем {round(self.get_volume(), 2)} \n'
         )
 
-
 # цилиндр
 class Cylinder(DrawingCylinder, Figure):
     @classmethod
@@ -320,10 +319,72 @@ class Cylinder(DrawingCylinder, Figure):
             f'Объем {round(self.get_volume(), 2)} \n'
         )
 
-# куб, параллелепипед, пирамида, конус.
+# куб
+class Cube(DrawingCube, Figure):
+    @classmethod
+    def get_options(cls):
+        return [
+            CalcOption('Ребро', ['Ребро'], cls),
+            CalcOption('Площадь', ['Площадь'], cls.cube_by_area),
+            CalcOption('Объем', ['Объем V'], cls.cube_by_volume),
+        ]
 
+    @classmethod
+    def cube_by_volume(cls, volume):
+        return cls(volume**(1/3))
+
+    @classmethod
+    def cube_by_area(cls, area):
+        return cls((area / 6)**(0.5))
+
+    def __init__(self, side):
+        self.side = side
+
+    def get_area(self):
+        return 6 * (self.side**2)
+
+    def get_volume(self):
+        return self.side**3
+
+    def calculate(self):
+        return (
+            f'Ребро {round(self.side, 2)} \n'
+            f'Площадь {round(self.get_area(), 2)} \n'
+            f'Объем {round(self.get_volume(), 2)} \n'
+        )
+
+# параллелепипед        
+class Parallelepiped(DrawingParallelepiped, Figure):
+    @classmethod
+    def get_options(cls):
+        return [
+            CalcOption('Прямоугольный по трем сторонам', ['a', 'b', 'c'], cls),
+        ]
+
+    def __init__(self, side_a, side_b, side_c):
+        self.side_a = side_a
+        self.side_b = side_b
+        self.side_c = side_c
+
+    def get_volume(self):
+        return self.side_a * self.side_b * self.side_c
+
+    def get_area(self):
+        return 2 * (self.side_a * self.side_b + self.side_b * self.side_c + self.side_a * self.side_c)
+
+    def calculate(self):
+        return (
+            f'Ребро a {round(self.side_a, 2)} \n'
+            f'Ребро b {round(self.side_b, 2)} \n'
+            f'Ребро c {round(self.side_c, 2)} \n'
+            f'Площадь {round(self.get_area(), 2)} \n'
+            f'Объем {round(self.get_volume(), 2)} \n'
+        )
+
+# пирамида
+# конус
 
 if __name__ == '__main__':
 
-    triangle = Triangle.get_options()[0].create_obj(4, 5, 6)
-    print(triangle.calculate())
+    cube = Cube(100)
+    print(cube.cube_by_area(6).get_volume())
