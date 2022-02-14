@@ -6,7 +6,7 @@ from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 
 from main_gui import Ui_MainWindow
-from logic import Circle, Triangle, Rectangle, Square
+from logic import Circle, Romb, Triangle, Rectangle, Square, FigureError, Trapezoid
 from tools import clear_layout
 
 
@@ -23,6 +23,8 @@ class Calculator:
         self.ui.triangleButton.clicked.connect(lambda: self.input_options(Triangle))
         self.ui.rectangleButton.clicked.connect(lambda: self.input_options(Rectangle))
         self.ui.squareButton.clicked.connect(lambda: self.input_options(Square))
+        self.ui.rombButton.clicked.connect(lambda: self.input_options(Romb))
+        self.ui.trapezoidButton.clicked.connect(lambda: self.input_options(Trapezoid))
         self.ui.optionsBox.currentIndexChanged.connect(self.draw_parameters)
         self.ui.calculateButton.clicked.connect(self.calculate)
 
@@ -59,19 +61,22 @@ class Calculator:
                 self.show_message('Нужно вводить числа!')
                 return
         
-        # создвем фигуру
-        self.cur_figure = self.cur_option.create_obj(*params)
-
-        # вывод расчетов
-        self.ui.outputTextBrowser.setText(self.cur_figure.calculate())
-
-        # вызов черчения
         # чистим холст
         clear_layout(self.ui.drawingLayout)
 
-        drawing = self.cur_figure.get_drawing()
-        self.ui.drawingLayout.addWidget(drawing)
+        try:
+            # создвем фигуру
+            self.cur_figure = self.cur_option.create_obj(*params)
 
+            # вывод расчетов
+            self.ui.outputTextBrowser.setText(self.cur_figure.calculate())
+        
+            # вызов черчения      
+            drawing = self.cur_figure.get_drawing()
+            self.ui.drawingLayout.addWidget(drawing)
+
+        except FigureError as err:
+            self.show_message(f'Плохие вводные! {err}')
 
     # сообщения
     def show_message(self, message):

@@ -103,3 +103,46 @@ class DrawingRectangle:
                 painter.end()
 
         return Drawing(self.side_ab, self.side_bc)
+
+class DrawingRomb:
+
+    def get_drawing(self):
+        
+        class Drawing(QFrame):
+            def __init__(self, side_ab, angle_a):
+                super().__init__()
+                self.side = side_ab
+                self.angle_a = angle_a
+
+            def paintEvent(self, e):
+
+                center_point = get_center(self)
+
+                # вершины
+                point_A = QPoint(0, 0) + center_point
+                point_B = point_A + QPoint(self.side, 0)
+                point_C = point_B + QPoint(int(math.cos(math.radians(self.angle_a)) * self.side), -int(math.sin(math.radians(self.angle_a)) * self.side))
+                point_D = point_C - QPoint(self.side, 0)
+                
+                # смещение от центра
+                middle_point = (point_A + point_B + point_C + point_D) / 4
+                delta_point = center_point - middle_point
+                point_A = point_A + delta_point
+                point_B = point_B + delta_point
+                point_C = point_C + delta_point
+                point_D = point_D + delta_point
+
+                # построение
+                painter = QPainter()
+                painter.begin(self)
+                painter.drawLine(point_A, point_B)
+                painter.drawLine(point_B, point_C)
+                painter.drawLine(point_C, point_D)
+                painter.drawLine(point_A, point_D)
+                painter.drawText(point_A + QPoint(-10, 10), 'А') # добавлено смещение подписи от точки
+                painter.drawText(point_B + QPoint(5, 10), 'B') # позже можно сделать выбор сверяясь с центром фигуры
+                painter.drawText(point_C + QPoint(5, -5), 'C')
+                painter.drawText(point_D + QPoint(-10, -5), 'D')
+                painter.end()
+
+        return Drawing(self.side_ab, self.angle_a)

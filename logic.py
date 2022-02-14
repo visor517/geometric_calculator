@@ -85,7 +85,7 @@ class Triangle(DrawingTriangle, Figure):
     def triangle_by_sides(side_ab, side_ac, side_bc):
         # проверяем на верность вводных
         if side_ab + side_ac < side_bc or side_ab + side_bc < side_ac or side_bc + side_ac < side_ab:
-            raise FigureError('Нарушено правило длин сторон треугольника')
+            raise FigureError('Нарушено правило длин сторон треугольника!')
         # вычисление углов
         angle_a = math.acos((side_ab**2 + side_ac**2 - side_bc**2) / (2 * side_ab * side_ac))
         angle_b = math.acos((side_ab**2 + side_bc**2 - side_ac**2) / (2 * side_ab * side_bc))
@@ -119,8 +119,41 @@ class Triangle(DrawingTriangle, Figure):
             f'Периметр {round(self.get_perimeter(), 2)} \n'
         )
 
+# четырехугольник
+
+class Quadrangle(Figure):
+    def __init__(self, side_ab, side_bc, side_cd, side_ad, angle_a, angle_b, angle_c, angle_d):
+        self.side_ab = side_ab
+        self.side_bc = side_bc
+        self.side_cd = side_cd
+        self.side_ad = side_ad
+        self.angle_a = angle_a
+        self.angle_b = angle_b
+        self.angle_c = angle_c
+        self.angle_d = angle_d
+
+    def get_perimeter(self):
+        return self.side_ab + self.side_bc + self.side_cd + self.side_ad
+
+    def get_area():
+        return None
+
+    def calculate(self):
+        return (
+            f'Сторона AB {self.side_ab} \n'
+            f'Сторона BC {self.side_bc} \n'
+            f'Сторона CD {self.side_cd} \n'
+            f'Сторона AD {self.side_ad} \n'
+            f'Угол A {round(self.angle_a, 1)} \n'
+            f'Угол B {round(self.angle_b, 1)} \n'
+            f'Угол C {round(self.angle_c, 1)} \n'
+            f'Угол D {round(self.angle_d, 1)} \n'
+            f'Площадь {round(self.get_area(), 2)} \n'
+            f'Периметр {round(self.get_perimeter(), 2)} \n'
+        )
+
 # прямоугольник
-class Rectangle(DrawingRectangle, Figure):
+class Rectangle(DrawingRectangle, Quadrangle):
 
     @classmethod
     def get_options(cls):
@@ -129,28 +162,12 @@ class Rectangle(DrawingRectangle, Figure):
         ]
     
     def __init__(self, side_ab, side_bc):
-        self.side_ab = side_ab
-        self.side_bc = side_bc
+        self.side_ab = self.side_cd = side_ab
+        self.side_bc = self.side_ad = side_bc
+        self.angle_a = self.angle_b = self.angle_c = self.angle_d = 90
 
     def get_area(self):
         return self.side_ab * self.side_bc
-
-    def get_perimeter(self):
-        return 2 * (self.side_ab + self.side_bc)
-
-    def calculate(self):
-        return (
-            f'Сторона AB {self.side_ab} \n'
-            f'Сторона BC {self.side_bc} \n'
-            f'Сторона CD {self.side_ab} \n'
-            f'Сторона AD {self.side_bc} \n'
-            f'Угол A 90.0 \n'
-            f'Угол B 90.0 \n'
-            f'Угол C 90.0 \n'
-            f'Угол D 90.0 \n'
-            f'Площадь {round(self.get_area(), 2)} \n'
-            f'Периметр {round(self.get_perimeter(), 2)} \n'
-        )
 
 # квадрат
 class Square(Rectangle):
@@ -162,22 +179,26 @@ class Square(Rectangle):
         ]
 
     def __init__(self, side):
-        self.side_ab = side
-        self.side_bc = side
-
+        self.side_ab = self.side_bc = self.side_cd = self.side_ad = side
+        self.angle_a = self.angle_b = self.angle_c = self.angle_d = 90
 
 # ромб
-class Romb(Figure):
-    def __init__(self, side, angle_a, angle_b):
-        self.side = side
-        self.angle_a = angle_a
-        self.angle_b = angle_b
+class Romb(DrawingRomb, Quadrangle):
+    @classmethod
+    def get_options(cls):
+        return [
+            CalcOption('Cторона и угол', ['АВ', 'A'], Romb)
+        ]
+    
+    def __init__(self, side, angle_a):
+        if angle_a >= 180 or angle_a <= 0:
+            raise FigureError ('Угол должен быть больше 0 и меньше 180')
+        self.side_ab = self.side_bc = self.side_cd = self.side_ad = side
+        self.angle_a = self.angle_c = angle_a
+        self.angle_b = self.angle_d = 180 - angle_a
 
     def get_area(self):
-        return self.side**2 * math.sin(self.angle_a)
-
-    def get_perimeter(self):
-        return 4 * self.side
+        return self.side_ab**2 * math.sin(math.radians(self.angle_a))
 
 # трапеция
 class Trapezoid(Figure):
