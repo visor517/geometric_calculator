@@ -201,17 +201,51 @@ class Romb(DrawingRomb, Quadrangle):
         return self.side_ab**2 * math.sin(math.radians(self.angle_a))
 
 # трапеция
-class Trapezoid(Figure):
-    def __init__(self, side_a, side_b, hight):
-        self.side_a = side_a
-        self.side_b = side_b
+class Trapezoid(DrawingTrapezoid, Quadrangle):
+    @classmethod
+    def get_options(cls):
+        return [
+            CalcOption('Основание, два угла и высота', ['АВ', 'A', 'B', 'h'], cls.trapezoid_by_base_2angles_hight)
+        ]
+
+    @staticmethod
+    def trapezoid_by_base_2angles_hight(side_ab, angle_a, angle_b, hight):
+        angle_c = 180 - angle_b
+        angle_d = 180 - angle_a
+        side_bc = hight / math.sin(math.radians(angle_b))
+        side_cd = side_ab - hight * (1/math.tan(math.radians(angle_a)) + 1/math.tan(math.radians(angle_b)))
+        side_ad = hight / math.sin(math.radians(angle_a))
+
+        return Trapezoid(side_ab, side_bc, side_cd, side_ad, angle_a, angle_b, angle_c, angle_d, hight)
+
+    def __init__(self, side_ab, side_bc, side_cd, side_ad, angle_a, angle_b, angle_c, angle_d, hight):
+        self.side_ab = side_ab
+        self.side_bc = side_bc
+        self.side_cd = side_cd
+        self.side_ad = side_ad
+        self.angle_a = angle_a
+        self.angle_b = angle_b
+        self.angle_c = angle_c
+        self.angle_d = angle_d
         self.hight = hight
 
     def get_area(self):
-        return (self.side_a + self.side_b) * self.hight / 2
+        return (self.side_ab + self.side_bc) * self.hight / 2
 
-    def get_perimeter(self):
-        return self.side_a + self.side_b + self.side_c + self.side_d
+    def calculate(self):
+        return (
+            f'Сторона AB {round(self.side_ab, 2)} \n'
+            f'Сторона BC {round(self.side_bc, 2)} \n'
+            f'Сторона CD {round(self.side_cd, 2)} \n'
+            f'Сторона AD {round(self.side_ad, 2)} \n'
+            f'Угол A {round(self.angle_a, 1)} \n'
+            f'Угол B {round(self.angle_b, 1)} \n'
+            f'Угол C {round(self.angle_c, 1)} \n'
+            f'Угол D {round(self.angle_d, 1)} \n'
+            f'Высота h {round(self.hight, 2)} \n'
+            f'Площадь {round(self.get_area(), 2)} \n'
+            f'Периметр {round(self.get_perimeter(), 2)} \n'
+        )
 
 
 # сфера, куб, параллелепипед, пирамида, цилиндр, конус.
