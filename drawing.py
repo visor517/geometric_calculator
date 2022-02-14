@@ -223,10 +223,10 @@ class DrawingCylinder:
     def get_drawing(self):
         
         class Drawing(QFrame):
-            def __init__(self, radius, hight):
+            def __init__(self, radius, height):
                 super().__init__()
                 self.radius = radius
-                self.hight = hight
+                self.height = height
 
             def paintEvent(self, e):
 
@@ -235,13 +235,13 @@ class DrawingCylinder:
                 # построение
                 painter = QPainter()
                 painter.begin(self)
-                painter.drawEllipse(center_point + QPoint(0, self.hight / 2), self.radius, self.radius / 2)
-                painter.drawEllipse(center_point - QPoint(0, self.hight / 2), self.radius, self.radius / 2)
-                painter.drawLine(center_point + QPoint(self.radius, self.hight / 2), center_point + QPoint(self.radius, -self.hight / 2))
-                painter.drawLine(center_point - QPoint(self.radius, self.hight / 2), center_point - QPoint(self.radius, -self.hight / 2))
+                painter.drawEllipse(center_point + QPoint(0, self.height / 2), self.radius, self.radius / 2)
+                painter.drawEllipse(center_point - QPoint(0, self.height / 2), self.radius, self.radius / 2)
+                painter.drawLine(center_point + QPoint(self.radius, self.height / 2), center_point + QPoint(self.radius, -self.height / 2))
+                painter.drawLine(center_point - QPoint(self.radius, self.height / 2), center_point - QPoint(self.radius, -self.height / 2))
                 painter.end()
 
-        return Drawing(self.radius, self.hight)
+        return Drawing(self.radius, self.height)
 
 class DrawingCube:
 
@@ -354,3 +354,26 @@ class DrawingParallelepiped:
                 painter.end()
 
         return Drawing(self.side_a, self.side_b, self.side_c)
+
+class DrawingCone:
+    def get_drawing(self):
+        
+        class Drawing(QFrame):
+            def __init__(self, radius, height):
+                super().__init__()
+                self.radius = radius
+                self.h = height
+
+            def paintEvent(self, e):
+
+                center_point = get_center(self)
+
+                # построение
+                painter = QPainter()
+                painter.begin(self)
+                painter.drawEllipse(center_point + QPoint(0, self.h / 2), self.radius, self.radius / 4)
+                painter.drawLine(center_point - QPoint(0, self.h / 2), center_point + QPoint(self.radius, self.h / 2))
+                painter.drawLine(center_point - QPoint(0, self.h / 2), center_point + QPoint(-self.radius, self.h / 2))
+                painter.end()
+
+        return Drawing(self.radius, self.height)

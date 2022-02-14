@@ -6,7 +6,8 @@ from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 
 from main_gui import Ui_MainWindow
-from logic import Circle, Romb, Triangle, Rectangle, Square, FigureError, Trapezoid, Sphere, Cylinder, Cube, Parallelepiped
+from logic import Circle, Romb, Triangle, Rectangle, Square, FigureError, Trapezoid, Sphere, Cylinder, \
+                Cube, Parallelepiped, Cone
 from tools import clear_layout
 
 
@@ -29,6 +30,8 @@ class Calculator:
         self.ui.cylinderButton.clicked.connect(lambda: self.input_options(Cylinder))
         self.ui.parallelepipedButton.clicked.connect(lambda: self.input_options(Parallelepiped))
         self.ui.cubeButton.clicked.connect(lambda: self.input_options(Cube))
+        # self.ui.pyramidButton.clicked.connect(lambda: self.input_options(Pyramid))
+        self.ui.coneButton.clicked.connect(lambda: self.input_options(Cone))
         self.ui.optionsBox.currentIndexChanged.connect(self.draw_parameters)
         self.ui.calculateButton.clicked.connect(self.calculate)
 
@@ -58,12 +61,14 @@ class Calculator:
     def calculate(self):
         # собираем введенные параметры 
         params = []
-        for index in range(1, self.ui.optionsFormLayout.count(), 2):
-            try:
+        try:
+            for index in range(1, self.ui.optionsFormLayout.count(), 2):
                 params.append(int(self.ui.optionsFormLayout.itemAt(index).widget().text()))
-            except:
-                self.show_message('Нужно вводить числа!')
-                return
+                if params[-1] <= 0:
+                    raise
+        except:
+            self.show_message('Нужно вводить положительные числа!')
+            return
         
         # чистим холст
         clear_layout(self.ui.drawingLayout)
@@ -73,7 +78,7 @@ class Calculator:
             self.cur_figure = self.cur_option.create_obj(*params)
 
             # вывод расчетов
-            self.ui.outputTextBrowser.setText(self.cur_figure.calculate())
+            self.ui.outputTextBrowser.setText(self.cur_figure.get_stats())
         
             # вызов черчения      
             drawing = self.cur_figure.get_drawing()

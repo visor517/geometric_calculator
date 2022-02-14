@@ -11,13 +11,17 @@ class FigureError(Exception):
 
 class Figure(abc.ABC):
 
-    # @abc.abstractmethod
-    def calculate(self):
-        return 'Метод calculate не задан'
+    @abc.abstractclassmethod
+    def get_options(cls):
+        pass
 
-    # временная заглушка
+    @abc.abstractmethod
+    def get_stats(self):
+        pass
+
+    @abc.abstractmethod
     def get_drawing(self):
-        print('Метод get_drawing не задан')
+        pass
 
 
 # варианы построения
@@ -34,7 +38,7 @@ class Circle(DrawingCircle, Figure):
     @classmethod
     def get_options(cls):
         return [
-            CalcOption('По радиусу', ['Радиус'], Circle),
+            CalcOption('По радиусу', ['Радиус'], cls),
             CalcOption('По диаметру', ['Диаметр'], cls.circle_by_diameter),
             CalcOption('По площади', ['Площадь'], cls.circle_by_area),
             CalcOption('По периметру', ['Периметр'], cls.circle_by_perimeter),
@@ -64,7 +68,7 @@ class Circle(DrawingCircle, Figure):
     def get_perimeter(self):
         return 2 * math.pi * self.radius
 
-    def calculate(self):
+    def get_stats(self):
         return (
             f'Радиус {round(self.radius, 2)} \n'
             f'Диаметр {round(self.get_diameter(), 2)} \n'
@@ -107,7 +111,7 @@ class Triangle(DrawingTriangle, Figure):
     def get_perimeter(self):
         return self.side_ab + self.side_bc + self.side_ac
 
-    def calculate(self):
+    def get_stats(self):
         return (
             f'Сторона AB {self.side_ab} \n'
             f'Сторона AC {self.side_ac} \n'
@@ -137,7 +141,7 @@ class Quadrangle(Figure):
     def get_area():
         return None
 
-    def calculate(self):
+    def get_stats(self):
         return (
             f'Сторона AB {self.side_ab} \n'
             f'Сторона BC {self.side_bc} \n'
@@ -157,7 +161,7 @@ class Rectangle(DrawingRectangle, Quadrangle):
     @classmethod
     def get_options(cls):
         return [
-            CalcOption('Две стороны', ['АВ', 'BC'], Rectangle)
+            CalcOption('Две стороны', ['АВ', 'BC'], cls)
         ]
     
     def __init__(self, side_ab, side_bc):
@@ -174,7 +178,7 @@ class Square(Rectangle):
     @classmethod
     def get_options(cls):
         return [
-            CalcOption('По стороне', ['АВ'], Square)
+            CalcOption('По стороне', ['АВ'], cls)
         ]
 
     def __init__(self, side):
@@ -186,7 +190,7 @@ class Romb(DrawingRomb, Quadrangle):
     @classmethod
     def get_options(cls):
         return [
-            CalcOption('Cторона и угол', ['АВ', 'A'], Romb)
+            CalcOption('Cторона и угол', ['АВ', 'A'], cls)
         ]
     
     def __init__(self, side, angle_a):
@@ -204,20 +208,20 @@ class Trapezoid(DrawingTrapezoid, Quadrangle):
     @classmethod
     def get_options(cls):
         return [
-            CalcOption('Основание, два угла и высота', ['АВ', 'A', 'B', 'h'], cls.trapezoid_by_base_2angles_hight)
+            CalcOption('Основание, два угла и высота', ['АВ', 'A', 'B', 'h'], cls.trapezoid_by_base_2angles_height)
         ]
 
     @staticmethod
-    def trapezoid_by_base_2angles_hight(side_ab, angle_a, angle_b, hight):
+    def trapezoid_by_base_2angles_height(side_ab, angle_a, angle_b, height):
         angle_c = 180 - angle_b
         angle_d = 180 - angle_a
-        side_bc = hight / math.sin(math.radians(angle_b))
-        side_cd = side_ab - hight * (1/math.tan(math.radians(angle_a)) + 1/math.tan(math.radians(angle_b)))
-        side_ad = hight / math.sin(math.radians(angle_a))
+        side_bc = height / math.sin(math.radians(angle_b))
+        side_cd = side_ab - height * (1/math.tan(math.radians(angle_a)) + 1/math.tan(math.radians(angle_b)))
+        side_ad = height / math.sin(math.radians(angle_a))
 
-        return Trapezoid(side_ab, side_bc, side_cd, side_ad, angle_a, angle_b, angle_c, angle_d, hight)
+        return Trapezoid(side_ab, side_bc, side_cd, side_ad, angle_a, angle_b, angle_c, angle_d, height)
 
-    def __init__(self, side_ab, side_bc, side_cd, side_ad, angle_a, angle_b, angle_c, angle_d, hight):
+    def __init__(self, side_ab, side_bc, side_cd, side_ad, angle_a, angle_b, angle_c, angle_d, height):
         self.side_ab = side_ab
         self.side_bc = side_bc
         self.side_cd = side_cd
@@ -226,12 +230,12 @@ class Trapezoid(DrawingTrapezoid, Quadrangle):
         self.angle_b = angle_b
         self.angle_c = angle_c
         self.angle_d = angle_d
-        self.hight = hight
+        self.height = height
 
     def get_area(self):
-        return (self.side_ab + self.side_bc) * self.hight / 2
+        return (self.side_ab + self.side_bc) * self.height / 2
 
-    def calculate(self):
+    def get_stats(self):
         return (
             f'Сторона AB {round(self.side_ab, 2)} \n'
             f'Сторона BC {round(self.side_bc, 2)} \n'
@@ -241,7 +245,7 @@ class Trapezoid(DrawingTrapezoid, Quadrangle):
             f'Угол B {round(self.angle_b, 1)} \n'
             f'Угол C {round(self.angle_c, 1)} \n'
             f'Угол D {round(self.angle_d, 1)} \n'
-            f'Высота h {round(self.hight, 2)} \n'
+            f'Высота h {round(self.height, 2)} \n'
             f'Площадь {round(self.get_area(), 2)} \n'
             f'Периметр {round(self.get_perimeter(), 2)} \n'
         )
@@ -251,7 +255,7 @@ class Sphere(DrawingSpere, Figure):
     @classmethod
     def get_options(cls):
         return [
-            CalcOption('По радиусу', ['Радиус'], Sphere),
+            CalcOption('По радиусу', ['Радиус'], cls),
             CalcOption('По диаметру', ['Диаметр'], cls.sphere_by_diameter),
             CalcOption('По площади', ['Площадь'], cls.sphere_by_area),
             CalcOption('По объему', ['Объем'], cls.sphere_by_volume),
@@ -281,7 +285,7 @@ class Sphere(DrawingSpere, Figure):
     def get_volume(self):
         return 4 * math.pi * self.radius**3 / 3
 
-    def calculate(self):
+    def get_stats(self):
         return (
             f'Радиус {round(self.radius, 2)} \n'
             f'Диаметр {round(self.get_diameter(), 2)} \n'
@@ -294,27 +298,27 @@ class Cylinder(DrawingCylinder, Figure):
     @classmethod
     def get_options(cls):
         return [
-            CalcOption('По высоте и радиусу', ['Радиус r', 'Высота h'], Cylinder),
+            CalcOption('По высоте и радиусу', ['Радиус r', 'Высота h'], cls),
         ]
 
-    def __init__(self, radius, hight):
+    def __init__(self, radius, height):
         self.radius = radius
-        self.hight = hight
+        self.height = height
 
     def get_diameter(self):
         return 2 * self.radius
 
     def get_area(self):
-        return 2 * math.pi * self.radius**2 + 2 * math.pi * self.radius * self.hight
+        return 2 * math.pi * self.radius**2 + 2 * math.pi * self.radius * self.height
 
     def get_volume(self):
-        return math.pi * self.radius**2 * self.hight
+        return math.pi * self.radius**2 * self.height
 
-    def calculate(self):
+    def get_stats(self):
         return (
             f'Радиус {round(self.radius, 2)} \n'
             f'Диаметр {round(self.get_diameter(), 2)} \n'
-            f'Высота {round(self.hight, 2)} \n'
+            f'Высота {round(self.height, 2)} \n'
             f'Площадь {round(self.get_area(), 2)} \n'
             f'Объем {round(self.get_volume(), 2)} \n'
         )
@@ -346,7 +350,7 @@ class Cube(DrawingCube, Figure):
     def get_volume(self):
         return self.side**3
 
-    def calculate(self):
+    def get_stats(self):
         return (
             f'Ребро {round(self.side, 2)} \n'
             f'Площадь {round(self.get_area(), 2)} \n'
@@ -372,7 +376,7 @@ class Parallelepiped(DrawingParallelepiped, Figure):
     def get_area(self):
         return 2 * (self.side_a * self.side_b + self.side_b * self.side_c + self.side_a * self.side_c)
 
-    def calculate(self):
+    def get_stats(self):
         return (
             f'Ребро a {round(self.side_a, 2)} \n'
             f'Ребро b {round(self.side_b, 2)} \n'
@@ -383,6 +387,38 @@ class Parallelepiped(DrawingParallelepiped, Figure):
 
 # пирамида
 # конус
+class Cone(DrawingCone, Figure):
+    @classmethod
+    def get_options(cls):
+        return [
+            CalcOption('Высота и радиус основания', ['Радиус r', 'Высота h'], cls)
+        ]
+
+    def __init__(self, radius, height):
+        self.radius = radius
+        self.height = height
+
+    def get_diameter(self):
+        return 2 * self.radius
+
+    def get_generatrix(self):
+        return (self.height**2 + self.radius**2)**(0.5)
+
+    def get_area(self):
+        return math.pi * self.radius + self.get_generatrix() + math.pi * self.radius**2
+
+    def get_volume(self):
+        return math.pi * self.radius**2 * self.height / 3
+
+    def get_stats(self):
+        return (
+            f'Радиус основания {round(self.radius, 2)} \n'
+            f'Диаметр основания {round(self.get_diameter(), 2)} \n'
+            f'Высота {round(self.height, 2)} \n'
+            f'Образующая {round(self.get_generatrix(), 2)} \n' 
+            f'Площадь {round(self.get_area(), 2)} \n'
+            f'Объем {round(self.get_volume(), 2)} \n'
+        )
 
 if __name__ == '__main__':
 

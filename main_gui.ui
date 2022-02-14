@@ -157,7 +157,7 @@
      <item row="2" column="1">
       <widget class="QPushButton" name="pyramidButton">
        <property name="enabled">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
        <property name="text">
         <string>Пирамида</string>
@@ -177,7 +177,7 @@
      <item row="2" column="3">
       <widget class="QPushButton" name="coneButton">
        <property name="enabled">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
        <property name="text">
         <string>Конус</string>
