@@ -120,7 +120,6 @@ class Triangle(DrawingTriangle, Figure):
         )
 
 # четырехугольник
-
 class Quadrangle(Figure):
     def __init__(self, side_ab, side_bc, side_cd, side_ad, angle_a, angle_b, angle_c, angle_d):
         self.side_ab = side_ab
@@ -247,10 +246,82 @@ class Trapezoid(DrawingTrapezoid, Quadrangle):
             f'Периметр {round(self.get_perimeter(), 2)} \n'
         )
 
+# сфера
+class Sphere(DrawingSpere, Figure):
+    @classmethod
+    def get_options(cls):
+        return [
+            CalcOption('По радиусу', ['Радиус'], Sphere),
+            CalcOption('По диаметру', ['Диаметр'], cls.sphere_by_diameter),
+            CalcOption('По площади', ['Площадь'], cls.sphere_by_area),
+            CalcOption('По объему', ['Объем'], cls.sphere_by_volume),
+        ]
 
-# сфера, куб, параллелепипед, пирамида, цилиндр, конус.
+    @staticmethod
+    def sphere_by_diameter(diameter):
+        return Sphere(diameter / 2)
 
-# Circle(Parameter('diameter', 6400)).calculate()
+    @staticmethod
+    def sphere_by_area(area):
+        return Sphere((area / (4 * math.pi))**(0.5))
+
+    @staticmethod
+    def sphere_by_volume(volume):
+        return Sphere( ((3 * volume) / (4 * math.pi))**(1/3) )
+
+    def __init__(self, radius):
+        self.radius = radius
+
+    def get_diameter(self):
+        return 2 * self.radius
+
+    def get_area(self):
+        return 4 * math.pi * self.radius**2
+
+    def get_volume(self):
+        return 4 * math.pi * self.radius**3 / 3
+
+    def calculate(self):
+        return (
+            f'Радиус {round(self.radius, 2)} \n'
+            f'Диаметр {round(self.get_diameter(), 2)} \n'
+            f'Площадь {round(self.get_area(), 2)} \n'
+            f'Объем {round(self.get_volume(), 2)} \n'
+        )
+
+
+# цилиндр
+class Cylinder(DrawingCylinder, Figure):
+    @classmethod
+    def get_options(cls):
+        return [
+            CalcOption('По высоте и радиусу', ['Радиус r', 'Высота h'], Cylinder),
+        ]
+
+    def __init__(self, radius, hight):
+        self.radius = radius
+        self.hight = hight
+
+    def get_diameter(self):
+        return 2 * self.radius
+
+    def get_area(self):
+        return 2 * math.pi * self.radius**2 + 2 * math.pi * self.radius * self.hight
+
+    def get_volume(self):
+        return math.pi * self.radius**2 * self.hight
+
+    def calculate(self):
+        return (
+            f'Радиус {round(self.radius, 2)} \n'
+            f'Диаметр {round(self.get_diameter(), 2)} \n'
+            f'Высота {round(self.hight, 2)} \n'
+            f'Площадь {round(self.get_area(), 2)} \n'
+            f'Объем {round(self.get_volume(), 2)} \n'
+        )
+
+# куб, параллелепипед, пирамида, конус.
+
 
 if __name__ == '__main__':
 
